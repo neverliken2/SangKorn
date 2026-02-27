@@ -1,4 +1,5 @@
 // Admin authentication utilities
+// Version: 2026-02-28
 import { supabase } from './supabase';
 import { IS_MOCK_MODE, mockAdmin } from './mock';
 
