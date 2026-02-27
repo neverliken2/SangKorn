@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import { getAdminSession, clearAdminSession, isAdminLoggedIn } from "@/lib/auth";
 import { getShopSettings, ShopSettings } from "@/lib/supabase";
 
@@ -146,9 +147,9 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
         {/* Navigation */}
         <nav className="p-4 space-y-1">
           {menuItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
             return (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
@@ -159,7 +160,7 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
               >
                 {item.icon}
                 <span className="font-medium">{item.label}</span>
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -202,7 +203,7 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
             </svg>
           </button>
           <div className="flex-1" />
-          <a
+          <Link
             href="/"
             target="_blank"
             className="text-sm text-gray-500 hover:text-primary flex items-center gap-2"
@@ -211,7 +212,7 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
             ดูหน้าร้าน
-          </a>
+          </Link>
         </header>
 
         {/* Page Content */}
