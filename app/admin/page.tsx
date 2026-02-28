@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { adminLogin, saveAdminSession, isAdminLoggedIn } from "@/lib/auth";
 
+const REMEMBER_KEY = "admin_remember_credentials";
+
 export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -11,12 +13,25 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
     // Check if already logged in
     if (isAdminLoggedIn()) {
       router.replace("/admin/dashboard");
     } else {
+      // Load saved credentials
+      try {
+        const saved = localStorage.getItem(REMEMBER_KEY);
+        if (saved) {
+          const { email: savedEmail, password: savedPassword } = JSON.parse(saved);
+          setEmail(savedEmail || "");
+          setPassword(savedPassword || "");
+          setRememberMe(true);
+        }
+      } catch {
+        // Ignore parsing errors
+      }
       setCheckingAuth(false);
     }
   }, [router]);
@@ -30,6 +45,12 @@ export default function AdminLoginPage() {
       const result = await adminLogin(email, password);
 
       if (result.success && result.admin) {
+        // Save or clear remembered credentials
+        if (rememberMe) {
+          localStorage.setItem(REMEMBER_KEY, JSON.stringify({ email, password }));
+        } else {
+          localStorage.removeItem(REMEMBER_KEY);
+        }
         saveAdminSession(result.admin);
         router.push("/admin/dashboard");
       } else {
@@ -99,6 +120,19 @@ export default function AdminLoginPage() {
                 placeholder="••••••••"
                 required
               />
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+              <label htmlFor="rememberMe" className="ml-2 text-sm text-gray-600">
+                จดจำรหัสผ่าน
+              </label>
             </div>
 
             <button
