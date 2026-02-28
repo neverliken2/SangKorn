@@ -422,6 +422,7 @@ export default function OrdersPage() {
                     onClick={async () => {
                       await handleStatusUpdate(selectedOrder.id, pendingStatus);
                       setPendingStatus(null);
+                      setSelectedOrder(null);
                     }}
                     className="w-full mt-4 py-3 rounded-lg text-white font-medium transition-all hover:opacity-90"
                     style={{
