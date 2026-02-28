@@ -140,7 +140,7 @@ export default function AdminDashboardLayout({ children }: AdminDashboardLayoutP
           )}
           <div className="flex-1 min-w-0">
             <h2 className="font-semibold text-gray-900 truncate">{shop?.shop_name || "ร้านอาหาร"}</h2>
-            <p className="text-xs text-gray-500">ระบบจัดการ v1.0.2</p>
+            <p className="text-xs text-gray-500">ระบบจัดการ v1.0.3</p>
           </div>
         </div>
 

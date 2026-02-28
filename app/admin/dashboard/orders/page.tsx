@@ -392,17 +392,22 @@ export default function OrdersPage() {
                       const badge = getStatusBadge(status);
                       const currentStatus = pendingStatus ?? selectedOrder.status;
                       const isActive = currentStatus === status;
+                      const colors = {
+                        pending: { bg: "#FEF3C7", text: "#92400E" },
+                        ready: { bg: "#D1FAE5", text: "#065F46" },
+                        completed: { bg: "#DBEAFE", text: "#1E40AF" },
+                        cancelled: { bg: "#FEE2E2", text: "#991B1B" },
+                      };
                       return (
                         <button
                           key={status}
                           onClick={() => setPendingStatus(status)}
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                            isActive
-                              ? "ring-2 ring-primary ring-offset-2"
-                              : ""
-                          } ${badge.class.replace("badge-", "bg-").replace("-", "-100 text-")}`}
+                            isActive ? "ring-2 ring-primary ring-offset-2" : ""
+                          }`}
                           style={{
-                            backgroundColor: isActive ? undefined : undefined,
+                            backgroundColor: colors[status].bg,
+                            color: colors[status].text,
                           }}
                         >
                           {badge.text}
