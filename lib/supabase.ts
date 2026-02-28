@@ -135,10 +135,11 @@ export const getShopSettings = async (): Promise<ShopSettings | null> => {
   return data;
 };
 
-export const updateShopSettings = async (settings: Partial<ShopSettings>): Promise<ShopSettings | null> => {
+export const updateShopSettings = async (id: string, settings: Partial<ShopSettings>): Promise<ShopSettings | null> => {
   const { data, error } = await supabase
     .from('shop_settings')
     .update(settings)
+    .eq('id', id)
     .select()
     .single();
 

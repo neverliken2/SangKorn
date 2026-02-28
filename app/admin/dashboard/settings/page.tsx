@@ -111,10 +111,17 @@ export default function SettingsPage() {
         cover_image_url: coverUrl,
       };
 
-      const updated = await updateShopSettings(data);
+      if (!shop?.id) {
+        console.error("No shop ID found");
+        alert("ไม่พบข้อมูลร้าน กรุณาโหลดหน้าใหม่");
+        return;
+      }
+      const updated = await updateShopSettings(shop.id, data);
       if (updated) {
         setShop(updated);
         alert("บันทึกข้อมูลเรียบร้อย");
+      } else {
+        alert("เกิดข้อผิดพลาดในการบันทึก");
       }
     } catch (error) {
       console.error("Failed to save settings:", error);
