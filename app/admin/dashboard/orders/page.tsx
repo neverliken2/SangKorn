@@ -10,6 +10,7 @@ export default function OrdersPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [pendingStatus, setPendingStatus] = useState<Order["status"] | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const previousOrderIds = useRef<Set<string>>(new Set());
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -312,7 +313,10 @@ export default function OrdersPage() {
         <div className="fixed inset-0 z-50 fade-in">
           <div
             className="absolute inset-0 bg-black/50"
-            onClick={() => setSelectedOrder(null)}
+            onClick={() => {
+              setSelectedOrder(null);
+              setPendingStatus(null);
+            }}
           />
           <div className="absolute inset-4 lg:inset-y-8 lg:inset-x-1/4 bg-white rounded-2xl overflow-hidden flex flex-col slide-up">
             {/* Header */}
@@ -324,7 +328,10 @@ export default function OrdersPage() {
                 </p>
               </div>
               <button
-                onClick={() => setSelectedOrder(null)}
+                onClick={() => {
+                  setSelectedOrder(null);
+                  setPendingStatus(null);
+                }}
                 className="p-2 hover:bg-gray-100 rounded-full"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -383,11 +390,12 @@ export default function OrdersPage() {
                   {(["pending", "ready", "completed", "cancelled"] as Order["status"][]).map(
                     (status) => {
                       const badge = getStatusBadge(status);
-                      const isActive = selectedOrder.status === status;
+                      const currentStatus = pendingStatus ?? selectedOrder.status;
+                      const isActive = currentStatus === status;
                       return (
                         <button
                           key={status}
-                          onClick={() => handleStatusUpdate(selectedOrder.id, status)}
+                          onClick={() => setPendingStatus(status)}
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                             isActive
                               ? "ring-2 ring-primary ring-offset-2"
@@ -403,6 +411,26 @@ export default function OrdersPage() {
                     }
                   )}
                 </div>
+                {/* Save Button */}
+                {pendingStatus && pendingStatus !== selectedOrder.status && (
+                  <button
+                    onClick={async () => {
+                      await handleStatusUpdate(selectedOrder.id, pendingStatus);
+                      setPendingStatus(null);
+                    }}
+                    className={`w-full mt-4 py-3 rounded-lg text-white font-medium transition-all ${
+                      pendingStatus === "pending" ? "bg-yellow-500 hover:bg-yellow-600" :
+                      pendingStatus === "ready" ? "bg-green-500 hover:bg-green-600" :
+                      pendingStatus === "completed" ? "bg-blue-500 hover:bg-blue-600" :
+                      "bg-red-500 hover:bg-red-600"
+                    }`}
+                  >
+                    {pendingStatus === "pending" ? "บันทึก - อยู่ในคิว" :
+                     pendingStatus === "ready" ? "บันทึก - พร้อมรับ" :
+                     pendingStatus === "completed" ? "บันทึก - เสร็จสิ้น" :
+                     "บันทึก - ยกเลิก"}
+                  </button>
+                )}
               </div>
             </div>
           </div>
