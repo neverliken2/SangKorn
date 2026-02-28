@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { adminLogin, saveAdminSession, isAdminLoggedIn } from "@/lib/auth";
 
 const REMEMBER_KEY = "admin_remember_credentials";
@@ -153,9 +154,9 @@ export default function AdminLoginPage() {
 
           {/* Back Link */}
           <div className="mt-6 text-center">
-            <a href="/" className="text-sm text-gray-500 hover:text-primary">
+            <Link href="/" className="text-sm text-gray-500 hover:text-primary">
               ← กลับหน้าหลัก
-            </a>
+            </Link>
           </div>
         </div>
       </div>

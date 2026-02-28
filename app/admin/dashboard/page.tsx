@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { getOrders, getMenuItems, getCategories, Order } from "@/lib/supabase";
 
 export default function AdminDashboard() {
@@ -120,9 +121,9 @@ export default function AdminDashboard() {
       <div className="card">
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="font-semibold text-gray-900">ออเดอร์ล่าสุด</h2>
-          <a href="/admin/dashboard/orders" className="text-sm text-primary hover:underline">
+          <Link href="/admin/dashboard/orders" className="text-sm text-primary hover:underline">
             ดูทั้งหมด →
-          </a>
+          </Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
