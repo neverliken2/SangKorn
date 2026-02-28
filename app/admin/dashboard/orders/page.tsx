@@ -418,12 +418,14 @@ export default function OrdersPage() {
                       await handleStatusUpdate(selectedOrder.id, pendingStatus);
                       setPendingStatus(null);
                     }}
-                    className={`w-full mt-4 py-3 rounded-lg text-white font-medium transition-all ${
-                      pendingStatus === "pending" ? "bg-yellow-500 hover:bg-yellow-600" :
-                      pendingStatus === "ready" ? "bg-green-500 hover:bg-green-600" :
-                      pendingStatus === "completed" ? "bg-blue-500 hover:bg-blue-600" :
-                      "bg-red-500 hover:bg-red-600"
-                    }`}
+                    className="w-full mt-4 py-3 rounded-lg text-white font-medium transition-all hover:opacity-90"
+                    style={{
+                      backgroundColor: 
+                        pendingStatus === "pending" ? "#EAB308" :
+                        pendingStatus === "ready" ? "#22C55E" :
+                        pendingStatus === "completed" ? "#3B82F6" :
+                        "#EF4444"
+                    }}
                   >
                     {pendingStatus === "pending" ? "บันทึก - อยู่ในคิว" :
                      pendingStatus === "ready" ? "บันทึก - พร้อมรับ" :
